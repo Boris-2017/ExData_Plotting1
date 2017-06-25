@@ -40,9 +40,10 @@ plot4 <- function()
         plot(Data$Date_and_Time, Data$Global_active_power, type="l", xlab="", ylab="Global Active Power (kilowatts)", main="")
 
         # Plot 3 from before: row 2, column 1
-        plot(Data$Date_and_Time, Data$Sub_metering_1, xlab="", ylab="Energy sub metering", main="", type="n")
-        # Now plot the individual graphs in the formats prescribed
-        lines(Data$Date_and_Time, Data$Sub_metering_1, col="black")
+        
+        # Plot the first graph in the format prescribed
+        plot(Data$Date_and_Time, Data$Sub_metering_1, type="l", xlab="", ylab="Energy sub metering", main="")
+        # Now plot the other graphs in the formats prescribed
         lines(Data$Date_and_Time, Data$Sub_metering_2, col="red")
         lines(Data$Date_and_Time, Data$Sub_metering_3, col="blue")
         legend("topright", legend=c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"), col=c("black", "red", "blue"), lty=1)

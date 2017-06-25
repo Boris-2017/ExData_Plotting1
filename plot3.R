@@ -34,11 +34,10 @@ plot3 <- function()
         # Open the device
         png(File_Name, width=480, height=480)
         
-        # Set up the plotting area in the format prescribed but do not plot yet - we will need three plots superimposed
-        plot(Data$Date_and_Time, Data$Sub_metering_1, xlab="", ylab="Energy sub metering", main="", type="n")
+        # Plot the first graph in the format prescribed
+        plot(Data$Date_and_Time, Data$Sub_metering_1, type="l", xlab="", ylab="Energy sub metering", main="")
         
-        # Now plot the individual graphs in the formats prescribed
-        lines(Data$Date_and_Time, Data$Sub_metering_1, col="black")
+        # Now plot the other graphs in the formats prescribed
         lines(Data$Date_and_Time, Data$Sub_metering_2, col="red")
         lines(Data$Date_and_Time, Data$Sub_metering_3, col="blue")
         
