@@ -25,9 +25,7 @@ plot2 <- function()
         
         # Add an R-native date-time column
         Data$Date_and_Time=strptime(paste(Data$Date, Data$Time), format="%d/%m/%Y %H:%M:%S")
-        # Add a column storing the number of minutes elapsesd since midnight on 1 February 2007 to use for plotting
-        Data$Mins_since_1_Feb_2007=as.integer(difftime(Data$Date_and_Time, strptime("01/02/2007", format="%d/%m/%Y"), units="mins"))
-        
+
         # At least on my system, an existing file is not overwritten by the below commands, so delete it first
         File_Name="../04. Output/plot2.png"
         if (file.exists(File_Name))
@@ -35,13 +33,8 @@ plot2 <- function()
         
         # Open the device
         png(File_Name, width=480, height=480)
-        # First, do not plot the X-axis
-        par(xaxt = "n")
         # Plot everything other than the X-axis in the format prescribed
-        plot(Data$Mins_since_1_Feb_2007, Data$Global_active_power, type="l", xlab="", ylab="Global Active Power (kilowatts)", main="")
-        # Now, add the X-axis with the tick marks at midnights of 1, 2 and 3 February 2007 (note that the unit is 1 minute) and corresponding labels
-        par(xaxt = "s")
-        axis(1, at=c(0, 1440, 2880), labels=c("Thu", "Fri", "Sat"))
+        plot(Data$Date_and_Time, Data$Global_active_power, type="l", xlab="", ylab="Global Active Power (kilowatts)", main="")
         # Close the device, which saves the file to the disk
         dev.off()
         

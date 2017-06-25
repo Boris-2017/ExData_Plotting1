@@ -25,9 +25,7 @@ plot3 <- function()
         
         # Add an R-native date-time column
         Data$Date_and_Time=strptime(paste(Data$Date, Data$Time), format="%d/%m/%Y %H:%M:%S")
-        # Add a column storing the number of minutes elapsesd since midnight on 1 February 2007 to use for plotting
-        Data$Mins_since_1_Feb_2007=as.integer(difftime(Data$Date_and_Time, strptime("01/02/2007", format="%d/%m/%Y"), units="mins"))
-        
+
         # At least on my system, an existing file is not overwritten by the below commands, so delete it first
         File_Name="../04. Output/plot3.png"
         if (file.exists(File_Name))
@@ -36,19 +34,13 @@ plot3 <- function()
         # Open the device
         png(File_Name, width=480, height=480)
         
-        # First, do not plot the X-axis
-        par(xaxt = "n")
         # Set up the plotting area in the format prescribed but do not plot yet - we will need three plots superimposed
-        plot(Data$Mins_since_1_Feb_2007, Data$Sub_metering_1, xlab="", ylab="Energy sub metering", main="", type="n")
+        plot(Data$Date_and_Time, Data$Sub_metering_1, xlab="", ylab="Energy sub metering", main="", type="n")
         
         # Now plot the individual graphs in the formats prescribed
-        lines(Data$Mins_since_1_Feb_2007, Data$Sub_metering_1, col="black")
-        lines(Data$Mins_since_1_Feb_2007, Data$Sub_metering_2, col="red")
-        lines(Data$Mins_since_1_Feb_2007, Data$Sub_metering_3, col="blue")
-        
-        # Now, add the X-axis with the tick marks at midnights of 1, 2 and 3 February 2007 (note that the unit is 1 minute) and corresponding labels
-        par(xaxt = "s")
-        axis(1, at=c(0, 1440, 2880), labels=c("Thu", "Fri", "Sat"))
+        lines(Data$Date_and_Time, Data$Sub_metering_1, col="black")
+        lines(Data$Date_and_Time, Data$Sub_metering_2, col="red")
+        lines(Data$Date_and_Time, Data$Sub_metering_3, col="blue")
         
         legend("topright", legend=c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"), col=c("black", "red", "blue"), lty=1)
         

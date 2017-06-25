@@ -25,8 +25,6 @@ plot4 <- function()
         
         # Add an R-native date-time column
         Data$Date_and_Time=strptime(paste(Data$Date, Data$Time), format="%d/%m/%Y %H:%M:%S")
-        # Add a column storing the number of minutes elapsesd since midnight on 1 February 2007 to use for plotting
-        Data$Mins_since_1_Feb_2007=as.integer(difftime(Data$Date_and_Time, strptime("01/02/2007", format="%d/%m/%Y"), units="mins"))
         
         # At least on my system, an existing file is not overwritten by the below commands, so delete it first
         File_Name="../04. Output/plot4.png"
@@ -39,30 +37,22 @@ plot4 <- function()
         par(mfcol=c(2, 2))
         
         # Plot 2 from before: row 1, column 1        
-        par(xaxt = "n")
-        plot(Data$Mins_since_1_Feb_2007, Data$Global_active_power, type="l", xlab="", ylab="Global Active Power (kilowatts)", main="")
-        Add_X_axis()
+        plot(Data$Date_and_Time, Data$Global_active_power, type="l", xlab="", ylab="Global Active Power (kilowatts)", main="")
 
         # Plot 3 from before: row 2, column 1
-        par(xaxt = "n")
-        plot(Data$Mins_since_1_Feb_2007, Data$Sub_metering_1, xlab="", ylab="Energy sub metering", main="", type="n")
+        plot(Data$Date_and_Time, Data$Sub_metering_1, xlab="", ylab="Energy sub metering", main="", type="n")
         # Now plot the individual graphs in the formats prescribed
-        lines(Data$Mins_since_1_Feb_2007, Data$Sub_metering_1, col="black")
-        lines(Data$Mins_since_1_Feb_2007, Data$Sub_metering_2, col="red")
-        lines(Data$Mins_since_1_Feb_2007, Data$Sub_metering_3, col="blue")
+        lines(Data$Date_and_Time, Data$Sub_metering_1, col="black")
+        lines(Data$Date_and_Time, Data$Sub_metering_2, col="red")
+        lines(Data$Date_and_Time, Data$Sub_metering_3, col="blue")
         legend("topright", legend=c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"), col=c("black", "red", "blue"), lty=1)
-        Add_X_axis()
-                
-        # Row 1, column 2
-        par(xaxt = "n")
-        plot(Data$Mins_since_1_Feb_2007, Data$Voltage, type="l", xlab="datetime", ylab="Voltage", main="")
-        Add_X_axis()
 
-        # Row 2, column 2
-        par(xaxt = "n")
-        plot(Data$Mins_since_1_Feb_2007, Data$Global_reactive_power, type="l", xlab="datetime", ylab="Global_reactive_power", main="")
-        Add_X_axis()
+        # Row 1, column 2
+        plot(Data$Date_and_Time, Data$Voltage, type="l", xlab="datetime", ylab="Voltage", main="")
         
+        # Row 2, column 2
+        plot(Data$Date_and_Time, Data$Global_reactive_power, type="l", xlab="datetime", ylab="Global_reactive_power", main="")
+
         # Close the device, which saves the file to the disk
         dev.off()
         
@@ -89,17 +79,4 @@ Check_for_Inadmissible_Values_Numeric <- function (Values, Min, Max, Warning_Mes
                 print(paste(Warning_Message, "Inadmissible values found at indices:", Inadmissible_Value_Indices))
         Inadmissible_Value_Indices
         
-}
-
-
-# This function is specialised to produce the X-axis suitable fro graph 2-4 of this assignment.
-# There are no input arguments and there is no output except for the axis produced
-
-Add_X_axis <- function()
-{
-
-# Add the X-axis with the tick marks at midnights of 1, 2 and 3 February 2007 (note that the unit is 1 minute) and corresponding labels
-par(xaxt = "s")
-axis(1, at=c(0, 1440, 2880), labels=c("Thu", "Fri", "Sat"))
-
 }
